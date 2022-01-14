@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  
+  <fg-loader *ngIf="loading$ | async; else notLoading"></fg-loader>
+
+  <ng-template #notLoading>
+    <ng-container *ngIf="!(error$ | async)">
+      <h1>{{ (details$ | async).city.name }}, {{ (details$ | async).city.country }}</h1>
+
+      <div class="card current-card">
+        <fg-detailed-weather [weather]="(details$ | async).current"
+                             [unit]="unit$ | async"></fg-detailed-weather>
+      </div>
+
+      <fg-daily-weather *ngFor="let daily of (details$ | async).daily"
+                        [dailyWeather]="daily"
+                        [timeZone]="(details$ | async).city.timeZone"
+                        [unit]="unit$ | async"></fg-daily-weather>
+    </ng-container>
+
+    <div *ngIf="error$ | async">Erro</div>
+  </ng-template>
+
+</div>
